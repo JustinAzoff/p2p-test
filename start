@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+INTERFACE=${1:-eth0}
+echo "Using Interface ${INTERFACE}. To change: $0 eth1"
+IP=$(/sbin/ifconfig $INTERFACE | grep 'inet addr' | cut -d: -f2 | awk '{print $1}')
+echo $IP
+
+export DISCO_SERVER='tcp://dovm1.bouncybouncy.net:9999|zNL}KnB%M<{c}i7G-gj)&B}s^^BDtkpf.zyn/7kV'
+export ZYRE_BIND="tcp://${IP}:13000"
+export PRIVATE_KEY_PATH=client.key_secret
+
+./gateway keygen || true
+echo '##################################################'
+cat client.key
+echo '##################################################'
+echo "Starting in 5 seconds..."
+sleep 5
+./gateway $(hostname)
