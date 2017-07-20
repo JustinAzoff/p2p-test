@@ -25,6 +25,7 @@ def sub(topics):
     #TODO: have gateway send a response to SUB, if no response, recreate sockets.
 
 def show_ssh(topic, who, messagedata):
+    prefix = "{}:".format(who)
     rec = json.loads(messagedata)
     out = "{description} {indicator} -> {dest}:{dest_portlist}".format(**rec)
     if 'additional_data' in rec and 'duser' in rec['additional_data']:
@@ -32,7 +33,7 @@ def show_ssh(topic, who, messagedata):
             rec['additional_data']['password'] = rec['additional_data']['fingerprint']
         if 'password' in rec['additional_data']:
             out += " {duser}:{password} using {client_version}".format(**rec['additional_data'])
-    print(who, out)
+    print(perfix, out)
 
 def main():
     topics = ["ssh"]
