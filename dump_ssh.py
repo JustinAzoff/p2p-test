@@ -28,7 +28,10 @@ def show_ssh(topic, who, messagedata):
     rec = json.loads(messagedata)
     out = "{description} {indicator} -> {dest}:{dest_portlist}".format(**rec)
     if 'additional_data' in rec and 'duser' in rec['additional_data']:
-        out += " {duser}:{password} using {client_version}".format(**rec['additional_data'])
+        if 'fingerprint' in rec['additional_data']:
+            rec['additional_data']['password'] = rec['additional_data']['fingerprint']
+        if 'password' in rec['additional_data']:
+            out += " {duser}:{password} using {client_version}".format(**rec['additional_data'])
     print(out)
 
 def main():
