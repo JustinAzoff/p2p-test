@@ -32,7 +32,7 @@ def show_ssh(topic, who, messagedata):
             rec['additional_data']['password'] = rec['additional_data']['fingerprint']
         if 'password' in rec['additional_data']:
             out += " {duser}:{password} using {client_version}".format(**rec['additional_data'])
-    print(out)
+    print(who, out)
 
 def main():
     topics = ["ssh"]
