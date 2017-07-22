@@ -4,9 +4,7 @@ PATH=$PATH:/sbin:/usr/sbin
 IP=$(ip route get 8.8.8.8 | awk 'NR==1 {print $NF}')
 echo "Using IP Address $IP"
 
-export DISCO_SERVER='tcp://dovm1.bouncybouncy.net:9999|zNL}KnB%M<{c}i7G-gj)&B}s^^BDtkpf.zyn/7kV'
 export ZYRE_BIND="tcp://${IP}:13000"
-export PRIVATE_KEY_PATH=client.key_secret
 
 ./gateway keygen || true
 echo '##################################################'
