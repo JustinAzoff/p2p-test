@@ -57,11 +57,9 @@ def main():
     topics = ["ssh"]
     socket = connect(host, topics)
 
-    if not os.path.exists(destination_file):
-        with open(destination_file, 'w') as f:
-            f.write(HEADER)
-
-    f = open(destination_file, 'a')
+    f = open(destination_file, 'w')
+    f.write(HEADER)
+    f.flush()
 
     last_sub = 0
     while True:
