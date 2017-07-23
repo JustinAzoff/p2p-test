@@ -4,7 +4,7 @@ PATH=$PATH:/sbin:/usr/sbin
 IP=$(ip route get 8.8.8.8 | awk 'NR==1 {print $NF}')
 echo "Using IP Address $IP"
 
-export NO_BEACON_PLS=1 #hack for now
+export NO_BEACON_PLZ=1 #hack for now
 export ZYRE_BIND="tcp://${IP}:13000"
 
 ./gateway keygen || true
