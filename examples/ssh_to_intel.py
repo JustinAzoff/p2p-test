@@ -61,6 +61,7 @@ def main():
     f.write(HEADER)
     f.flush()
 
+    seen = set()
     last_sub = 0
     while True:
         if time.time() - last_sub > 10:
@@ -72,6 +73,9 @@ def main():
             msg = [ m.decode('utf-8') for m in msg ]
             topic, who, messagedata = msg
             indicator, msg = format_ssh(messagedata)
+            if indicator in seen:
+                continue
+            seen.add(indicator)
             line = format_line(indicator, who, msg)
             sys.stdout.write(line)
             f.write(line)
