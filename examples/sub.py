@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from __future__ import print_function
 import sys
 import zmq
 import time
@@ -11,7 +12,7 @@ def connect(topics):
     socket = context.socket(zmq.SUB)
     socket.connect ("tcp://%s:%s" % (host, 14000))
     for topic in topics:
-        socket.setsockopt_string(zmq.SUBSCRIBE, topic)
+        socket.setsockopt(zmq.SUBSCRIBE, topic.encode('utf-8'))
     return socket
 
 
