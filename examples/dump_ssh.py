@@ -12,6 +12,12 @@ def connect(topics):
     # Socket to talk to server
     socket = context.socket(zmq.SUB)
     socket.connect ("tcp://%s:%s" % (host, 14000))
+
+    socket.setsockopt(zmq.TCP_KEEPALIVE, 1)
+    socket.setsockopt(zmq.TCP_KEEPALIVE_INTVL, 15)
+    socket.setsockopt(zmq.TCP_KEEPALIVE_IDLE, 240)
+    socket.setsockopt(zmq.TCP_KEEPALIVE_CNT, 4)
+
     for topic in topics:
         socket.setsockopt(zmq.SUBSCRIBE, topic.encode('utf-8'))
     return socket
@@ -42,16 +48,25 @@ def main():
     socket = connect(topics)
 
     last_sub = 0
+    last_recv = time.time()
     while True:
-        if time.time() - last_sub > 10:
-            sub(topics)
-            last_sub = time.time()
-
         if socket.poll(1000):
             msg = socket.recv_multipart()
             msg = [ m.decode('utf-8') for m in msg ]
             topic, who, messagedata = msg
             show_ssh(topic, who, messagedata)
+            last_recv = time.time()
+
+        now = time.time()
+        if now - last_sub > 10:
+            sub(topics)
+            last_sub = time.time()
+
+
+        if now - last_recv > 60*60*10:
+            print("Nothing within 10 minutes??? reconnecting")
+            socket = connect(topics)
+            last_recv = time.time()
 
 if __name__ == "__main__":
     main()
