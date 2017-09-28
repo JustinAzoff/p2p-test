@@ -13,4 +13,4 @@ cat client.key
 echo '##################################################'
 echo "Starting in 5 seconds..."
 sleep 5
-./gateway $(hostname)
+./gateway $(hostname -f)
